@@ -28,16 +28,19 @@
 </template>
 <script>
 import { ref, reactive, computed, onMounted } from 'vue'
+
+function toInputTask(inputTask) {
+  inputTask.value.focus()
+}
+
 export default {
-  name: 'Home',
+  name: 'Update',
   setup() {
     const inputTask = ref(null)
     const keyUp = () => {
       addTask()
     }
-    const toInputTask = () => {
-      inputTask.value.focus()
-    }
+    const useToInputTask = toInputTask(inputTask)
     const getFocus = onMounted(() => {
       inputTask.value.focus()
       window.addEventListener('keyup', keyUp)
@@ -53,7 +56,7 @@ export default {
       taskCount,
       newTask: ''
     })
-    const handlerChecked = (item, index) => {
+    const handlerChecked = (item, index, state) => {
       item.checked = !item.checked
       state.unFinishedList.splice(index, 1)
       state.finishedList.push(item)
@@ -71,7 +74,7 @@ export default {
       state.unFinishedList.splice(index, 1)
     }
     return {
-      state, handlerChecked, addTask, inputTask, getFocus, toInputTask, keyUp, deleteTask
+      state, addTask, inputTask, getFocus, toInputTask, keyUp, deleteTask, handlerChecked, useToInputTask
     }
   }
 }
